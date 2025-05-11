@@ -1,0 +1,74 @@
+# Licença do Manager Z
+
+Copyright (c) 2025 Sonho Digital LTDA - Todos os direitos reservados.
+
+## 1. Licenciamento de Software
+
+O código-fonte do Manager Z é licenciado sob a MIT License, o que permite seu uso, modificação e distribuição livremente, incluindo para fins comerciais, com as ressalvas e condições adicionais especificadas neste documento.
+
+## 2. Proteção de Propriedade Intelectual
+
+### 2.1 Marca e Logo
+O nome "Manager Z", o logotipo do Manager Z e quaisquer outras marcas registradas, marcas de serviço, nomes comerciais, e elementos visuais de identidade associados são propriedade exclusiva da Sonho Digital LTDA e NÃO são cobertos pela licença open source. Qualquer uso destes elementos está sujeito à autorização prévia por escrito da Sonho Digital LTDA.
+
+### 2.2 Restrições de Identidade Visual
+Ao utilizar os componentes front-end do Manager Z, você não pode:
+- Remover ou modificar o logotipo do Manager Z
+- Alterar as informações de direitos autorais no console ou nos aplicativos
+- Recriar ou imitar a identidade visual do Manager Z de forma a causar confusão com o produto original
+
+## 3. Requisitos de Atribuição e Notificação
+
+### 3.1 Notificação Obrigatória
+Qualquer uso do Manager Z como parte de qualquer projeto, incluindo sistemas de código fechado ou software proprietário, requer que o usuário exiba uma notificação clara no sistema informando que o Manager Z está sendo utilizado. Esta notificação deve:
+- Estar visível aos administradores do sistema
+- Ser acessível na documentação ou página de configurações
+- Incluir o texto: "Este sistema utiliza o Manager Z, desenvolvido pela Sonho Digital LTDA"
+
+### 3.2 Documentação e Material Promocional
+Qualquer documentação, material promocional ou comunicação relacionada a produtos derivados do Manager Z deve incluir uma referência clara à origem do software.
+
+## 4. Uso Comercial
+
+### 4.1 Uso Comercial Permitido
+O Manager Z pode ser utilizado comercialmente, incluindo como:
+- Serviço de backend para outras aplicações
+- Plataforma de desenvolvimento de aplicações para empresas
+- Componente em soluções comerciais de software
+
+### 4.2 Licenciamento Comercial Obrigatório
+Uma licença comercial separada deverá ser obtida da Sonho Digital LTDA nos seguintes casos:
+- Remoção ou modificação das atribuições de propriedade intelectual
+- Não cumprimento do requisito de notificação de uso
+- Distribuição do software como um produto comercial sob outra marca sem as devidas atribuições
+- Qualquer uso que viole os termos desta licença
+
+Para questões relacionadas ao licenciamento comercial, entre em contato com: contato@managerz.com
+
+## 5. Contribuições
+
+### 5.1 Acordo de Contribuição
+Como contribuidor para o projeto Manager Z, você concorda que:
+- A Sonho Digital LTDA pode ajustar os termos do código aberto conforme necessário
+- Seu código contribuído pode ser usado para fins comerciais pela Sonho Digital LTDA
+- Suas contribuições não lhe conferem nenhum direito sobre a marca ou propriedade intelectual do Manager Z
+
+### 5.2 Licença de Contribuições
+Todas as contribuições para o código são concedidas sob os mesmos termos desta licença. Os contribuidores mantêm os direitos autorais de suas contribuições específicas, mas concedem à Sonho Digital LTDA uma licença perpétua, mundial, não exclusiva, gratuita, irrevogável de copyright para reproduzir, modificar, exibir publicamente, sublicenciar e distribuir suas contribuições.
+
+## 6. Isenção de Garantia e Limitação de Responsabilidade
+
+O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, MAS NÃO SE LIMITANDO ÀS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM NENHUM CASO OS AUTORES OU TITULARES DE DIREITOS AUTORAIS SERÃO RESPONSÁVEIS POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTE DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRAS NEGOCIAÇÕES NO SOFTWARE.
+
+## 7. Disposições Gerais
+
+### 7.1 Modificação dos Termos
+A Sonho Digital LTDA reserva-se o direito de modificar os termos desta licença a qualquer momento. As modificações entrarão em vigor imediatamente após sua publicação.
+
+### 7.2 Lei Aplicável
+Esta licença será regida e interpretada de acordo com as leis do Brasil, independentemente dos princípios de conflitos de leis.
+
+---
+
+© 2025 Sonho Digital LTDA - Todos os direitos reservados.
+Manager Z é uma marca registrada da Sonho Digital LTDA.
