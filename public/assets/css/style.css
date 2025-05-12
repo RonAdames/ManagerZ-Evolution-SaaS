@@ -1,0 +1,283 @@
+/* Reset e variáveis globais */
+:root {
+    --primary-color: #00b4d8;
+    --primary-dark: #0077a6;
+    --sidebar-bg: #1d1f2f;
+    --sidebar-hover: #2c2f3f;
+    --text-primary: #333;
+    --text-light: #ffffff;
+    --bg-light: #f0f2f5;
+    --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Menu lateral com efeitos modernos */
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    color: var(--text-light);
+    padding-top: 20px;
+    position: fixed;
+    height: 100vh;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.sidebar img {
+    width: 120px;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.sidebar img:hover {
+    transform: scale(1.05);
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 20px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    padding: 14px 20px;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    font-size: 15px;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+    opacity: 0.85;
+}
+
+.sidebar a:hover {
+    background-color: var(--sidebar-hover);
+    border-left: 3px solid var(--primary-color);
+    opacity: 1;
+    padding-left: 25px;
+}
+
+.sidebar a.active {
+    background-color: var(--sidebar-hover);
+    border-left: 3px solid var(--primary-color);
+    opacity: 1;
+}
+
+/* Conteúdo principal com layout responsivo */
+.content {
+    margin-left: 250px;
+    padding: 30px;
+    width: calc(100% - 250px);
+    max-width: 1400px;
+}
+
+/* Títulos modernos */
+h1, h2, h3 {
+    margin-bottom: 25px;
+    font-weight: 600;
+    color: var(--text-primary);
+    position: relative;
+}
+
+h1::after, h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+    margin-top: 10px;
+    border-radius: 2px;
+}
+
+/* Formulários com design moderno */
+form {
+    /* max-width: 500px; */
+    margin-bottom: 30px;
+    background-color: var(--text-light);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin: 12px 0 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: var(--transition);
+    background: #ffffff;
+}
+
+form input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+}
+
+/* Tabelas com design moderno */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    box-shadow: var(--shadow-md);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid #edf2f7;
+}
+
+th {
+    background-color: var(--sidebar-bg);
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Botões modernos com efeitos */
+button, a.button-link {
+    display: inline-block;
+    padding: 12px 20px;
+    color: white;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+button:hover, a.button-link:hover {
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+}
+
+button:active, a.button-link:active {
+    transform: translateY(0);
+}
+
+/* Mensagens de feedback */
+.error, .success {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.error {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #dc2626;
+}
+
+.success {
+    background-color: #dcfce7;
+    border: 1px solid #22c55e;
+    color: #16a34a;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .sidebar {
+        width: 70px;
+        overflow: hidden;
+    }
+    
+    .sidebar h2, .sidebar span {
+        display: none;
+    }
+    
+    .sidebar img {
+        width: 40px;
+    }
+    
+    .content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 15px;
+    }
+    
+    form {
+        padding: 20px;
+    }
+}

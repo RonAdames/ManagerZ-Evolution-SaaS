@@ -22,18 +22,16 @@ Manager Z é um sistema de gerenciamento de APIs de WhatsApp open source, projet
 
 ### Já Implementadas
 
-✅ Gerenciamento de instâncias: Crie, configure e monitore várias instâncias de API do WhatsApp  
-✅ Autenticação segura: Sistema de login com múltiplos níveis de acesso e autenticação de dois fatores  
+✅ Gerenciamento de instâncias: Crie, configure e monitore várias instâncias de API do WhatsApp Usandoa  Evolution 
+✅ Autenticação segura: Sistema de login com múltiplos níveis de acesso 
 ✅ Painel administrativo: Interface intuitiva para gerenciar todas as configurações e instâncias  
 ✅ Registros de atividade: Logs detalhados para auditoria e rastreamento de uso  
-✅ Configurações personalizáveis: Adapte cada instância às necessidades específicas  
+✅ Configurações personalizáveis: Adapte cada instância às necessidades específicas
+✅ Facilidade de conectar com Chatwoot e Webhook    
 
 ### Em Desenvolvimento
 
-🔨 Integração com CRMs: Conectores para sistemas populares de CRM e ERP  
-🔨 API própria: Endpoints para integrar o Manager Z com outros sistemas  
-🔨 Análise avançada: Métricas e estatísticas de uso e desempenho  
-🔨 Templates de mensagens: Biblioteca de modelos para comunicação rápida  
+🔨 ... 
 
 ---
 
@@ -114,17 +112,17 @@ src/
 
 ### Pré-requisitos
 
+- Hosting recomendado VPS ou Hostinger 
 - PHP 8.2 ou superior
 - Servidor web (Apache ou Nginx)
 - MySQL 5.7 ou superior
-- Composer (para gerenciar dependências PHP)
 
 ### Passo a Passo
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/cadao7/managerz-opensource.git
-   cd managerz-opensource
+   git clone https://github.com/sonho-digital/ManagerZ-Evolution.git
+   cd managerz-evolution
    ```
 
 2. **Configure o ambiente:**
@@ -136,7 +134,7 @@ src/
 
 3. **Instale as dependências:**
    ```bash
-   composer install
+   
    ```
 
 4. **Configure o banco de dados:**
@@ -150,7 +148,7 @@ src/
      ```
    - Conceda permissões ao usuário:
      ```sql
-     GRANT ALL PRIVILEGES ON manager_z.* TO 'seu_usuario'@'localhost' IDENTIFIED BY 'sua_senha';
+     GRANT ALL PRIVILEGES ON manager_next.* TO 'mysql'@'%';
      FLUSH PRIVILEGES;
      ```
    - Importe o arquivo SQL:
@@ -174,26 +172,32 @@ Além da versão open source, oferecemos o **Manager Z PRO**, uma solução prem
 
 | Funcionalidade                                    | Open Source | PRO |
 | ------------------------------------------------- | :---------: | :-: |
-| 🚻 Dashboard para gerenciamento de instâncias      |      ✅     |  ✅  |
-| 📁 SaaS - Criação de contas com 1 única API        |      ✅     |  ✅  |
-| 📁 SaaS - Criação de múltiplas contas de usuários  |      ❌     |  ✅  |
+| 📊 Dashboard para gerenciamento de instâncias      |      ✅     |  ✅  |
+| 📦 SaaS - Criação de contas com 1 única API        |      ✅     |  ✅  |
+| 🎨 Whitelabel **Escolha as cores, logo**           |      ❌     |  ✅  |
+| 👥 Limite a qtd de Usuario por conta User-ADM      |      ❌     |  ✅  |
+| 🖥️ Self Hosted                                     |      ✅     |  ❌  |
 | 🔄 Múltiplas sessões                               |      ✅     |  ✅  |
-| ⏩ Encaminhamento de mensagens                     |      ✅     |  ✅  |
-| 📥 Recebimento de mensagens                        |      ✅     |  ✅  |
-| 👤 Múltiplas APIs                                  |      ❌     |  ✅  |
-| 📍 Compartilhamento de API                         |      ❌     |  ✅  |
+| 🌐 Múltiplas sessões com múltiplas API             |      ❌     |  ✅  |
+| 📥 Recebimento de mensagens no Painel              |      ❌     |  ✅  |
+| 🔗 Múltiplas APIs                                  |      ❌     |  ✅  |
+| 🤝 Compartilhamento de API                         |      ❌     |  ✅  |
 | 🤖 TypeBot                                         |      ❌     |  ✅  |
 | 💬 Chats                                           |      ❌     |  ✅  |
-| 🛟 Área de Suporte                                 |      ❌     |  ✅  |
+| 📘 Área de Tutorial **Adicione Videos**            |      ✅     |  ✅  |
+| 📚 Área de Tutorial mais completa                  |      ❌     |  ✅  |
+| 🆘 Área de Suporte                                 |      ❌     |  ✅  |
 | 🎫 Tickets                                         |      ❌     |  ✅  |
-| ⚙️ Configurações avançadas                         |      ❌     |  ✅  |
+| ❓ FAQ                                             |      ❌     |  ✅  |
+| ⚙️ Configurações avançadas                         |      ✅     |  ✅  |
 | 🔢 Limite de Conexão Por API                       |      ❌     |  ✅  |
 | ⭐ Prioridade de Uso de API                        |      ❌     |  ✅  |
 | 🚦 Status de API (Ativo, Parcial, Manutenção)      |      ❌     |  ✅  |
 | 🔑 Permitir Cliente Criar suas API                 |      ❌     |  ✅  |
-| 📚 Área de tutorial mais completa                  |      ❌     |  ✅  |
-| 👥 Gerenciamento de usuários                       |      ❌     |  ✅  |
-| 📌 Envio de localização                            |      ❌     |  ✅  |
+| 📖 Área de tutorial mais completa                  |      ❌     |  ✅  |
+| 👤 Gerenciamento de usuários                       |      ✅     |  ✅  |
+| 📈 Dashboard verificar o Status da Conexão         |      ❌     |  ✅  |
+
 
 Para saber mais sobre o **Manager Z PRO**, entre em contato conosco pelo email [contato@sonho.digital](mailto:contato@sonho.digital) ou visite nosso site [managerz.sonho.digital](https://managerz.sonho.digital).
 
