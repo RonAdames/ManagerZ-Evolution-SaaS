@@ -58,7 +58,22 @@ body::after {
     padding: 60px 40px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     order: 2;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.form-container p {
+    text-align: center;
+    color: #6b7280;
+    margin: 0 0 40px 0;
 }
 
 .welcome-container {
@@ -100,18 +115,24 @@ body::after {
     font-size: 28px;
     font-weight: 600;
     color: #333;
-    margin-bottom: 40px;
+    margin-bottom: 5px;
     text-align: center;
+}
+
+.login-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin: 0 0 40px 0;
     position: relative;
 }
 
-.login-title::after {
+.login-subtitle::after {
     content: '';
     position: absolute;
     width: 50px;
     height: 3px;
     background-color: #3b82f6;
-    bottom: -10px;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
 }

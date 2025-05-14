@@ -4,6 +4,10 @@ require_once '../config.php';
 require_once __DIR__ . '/../../src/Session.php';
 require_once __DIR__ . '/../../src/Security.php';
 require_once __DIR__ . '/../../src/Api.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 
 // Iniciar sessão de forma segura
 Session::start();
@@ -96,8 +100,64 @@ if ($status !== 'connected') {
         $response = $api->connectInstance($instance_name);
 
         if (isset($response['base64'])) {
+            // Se a API retornar o QR Code em base64, usamos diretamente
             $qrcode_base64 = $response['base64'];
+            
+            // Converter para preto e branco
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $qrcode_base64));
+            $image = imagecreatefromstring($imageData);
+            
+            if ($image !== false) {
+                // Aplicar filtro preto e branco
+                imagefilter($image, IMG_FILTER_GRAYSCALE);
+                imagefilter($image, IMG_FILTER_CONTRAST, -100);
+                
+                // Capturar a saída em buffer
+                ob_start();
+                imagepng($image);
+                $imageData = ob_get_clean();
+                
+                // Converter de volta para base64
+                $qrcode_base64 = 'data:image/png;base64,' . base64_encode($imageData);
+                
+                // Liberar memória
+                imagedestroy($image);
+            }
+            
             $logger->info("QR code obtido para a instância {$instance_name}");
+        } elseif (isset($response['code'])) {
+            // Configurar opções do QR Code
+            $options = new QROptions([
+                'outputType' => QRCode::OUTPUT_IMAGE_PNG,
+                'eccLevel' => QRCode::ECC_L,
+                'scale' => 10,
+                'imageBase64' => true,
+                'moduleValues' => [
+                    // Módulos escuros (QR Code)
+                    1536 => '#000000', // QR_FINDER_DARK
+                    6    => '#000000', // QR_FINDER_DOT
+                    5632 => '#000000', // QR_ALIGNMENT_DARK
+                    2560 => '#000000', // QR_TIMING_DARK
+                    3072 => '#000000', // QR_FORMAT_DARK
+                    3584 => '#000000', // QR_VERSION_DARK
+                    4096 => '#000000', // QR_DATA_DARK
+                    1024 => '#000000', // QR_QUIETZONE
+                    // Módulos claros (fundo)
+                    512  => '#FFFFFF', // QR_FINDER_LIGHT
+                    8    => '#FFFFFF', // QR_FINDER_DOT_LIGHT
+                    5888 => '#FFFFFF', // QR_ALIGNMENT_LIGHT
+                    2816 => '#FFFFFF', // QR_TIMING_LIGHT
+                    3328 => '#FFFFFF', // QR_FORMAT_LIGHT
+                    3840 => '#FFFFFF', // QR_VERSION_LIGHT
+                    4608 => '#FFFFFF', // QR_DATA_LIGHT
+                    2048 => '#FFFFFF', // QR_QUIETZONE_LIGHT
+                ],
+            ]);
+            
+            // Gerar QR Code
+            $qrcode = new QRCode($options);
+            $qrcode_base64 = $qrcode->render($response['code']);
+            $logger->info("QR code gerado para a instância {$instance_name}");
         }
     } catch (Exception $e) {
         $logger->error("Erro ao obter QR code: " . $e->getMessage());
@@ -438,7 +498,7 @@ include '../base.php';
         <svg class="spinner" viewBox="0 0 50 50">
             <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
         </svg>
-        GERANDO NOVO QR-CODE...
+        Atualizando QR-CODE...
     `;
 
         const instanceName = document.getElementById('instance_name').value;
@@ -459,7 +519,7 @@ include '../base.php';
             <svg class="spinner" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
             </svg>
-            NOVO QR-CODE FOI GERADO
+            Atualizando QR-CODE...
         `;
 
                 // Agora, faz a requisição para obter o novo QR code
@@ -495,6 +555,16 @@ include '../base.php';
                         </button>
                     </div>
                 </div>
+                <div class="action-buttons">
+                    <button class="delete-button" onclick="confirmDeleteInstance()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"></path>
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        </svg>
+                        Excluir Instância
+                    </button>
+                </div>
             `;
                 } else {
                     // Exibir mensagem de erro
@@ -515,6 +585,16 @@ include '../base.php';
                     </svg>
                     <p>${data.message || 'Erro ao obter o QR Code. Tente novamente em alguns instantes.'}</p>
                     <button onclick="refreshQRCode()" class="refresh-button" id="refreshQrBtn">Tentar Novamente</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="delete-button" onclick="confirmDeleteInstance()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"></path>
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        </svg>
+                        Excluir Instância
+                    </button>
                 </div>
             `;
                 }
@@ -539,6 +619,16 @@ include '../base.php';
                 </svg>
                 <p>Erro de conexão. Verifique sua internet e tente novamente.</p>
                 <button onclick="refreshQRCode()" class="refresh-button" id="refreshQrBtn">Tentar Novamente</button>
+            </div>
+            <div class="action-buttons">
+                <button class="delete-button" onclick="confirmDeleteInstance()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    </svg>
+                    Excluir Instância
+                </button>
             </div>
         `;
             });

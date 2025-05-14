@@ -1,0 +1,24 @@
+{
+    "name": "managerz/evolution",
+    "description": "Sistema de Gerenciamento ManagerZ Evolution",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "ext-pdo": "*",
+        "ext-json": "*",
+        "ext-gd": "*",
+        "vlucas/phpdotenv": "^5.5",
+        "chillerlan/php-qrcode": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
+} 

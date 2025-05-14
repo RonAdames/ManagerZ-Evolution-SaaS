@@ -124,8 +124,8 @@ if (Session::isAuthenticated()) {
 $csrf_token = Security::generateCsrfToken();
 
 // Initialize variables
-$error_message = '';
-$success_message = '';
+$error_message = isset($_GET['error']) ? htmlspecialchars($_GET['error']) : '';
+$success_message = isset($_GET['success']) ? htmlspecialchars($_GET['success']) : '';
 $step = isset($_GET['step']) ? $_GET['step'] : 'request';
 $token = isset($_GET['token']) ? trim($_GET['token']) : '';
 $username = isset($_GET['username']) ? urldecode(trim($_GET['username'])) : ''; // Decodificar o username da URL
@@ -371,10 +371,10 @@ $title = "Esqueceu a Senha";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Redefinição de Senha - <?php echo APP_NAME; ?>">
+    <meta name="description" content="Recuperação de Senha - Painel de Controle WhatsApp">
     <meta name="author" content="Sonho Digital">
 
-    <title><?php echo $title; ?> - <?php echo APP_NAME; ?></title>
+    <title>Recuperar Senha - <?php echo APP_NAME; ?></title>
 
     <!-- Prevenção de armazenamento em cache para páginas sensíveis -->
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
@@ -382,7 +382,7 @@ $title = "Esqueceu a Senha";
     <meta http-equiv="Expires" content="0">
     <link rel="icon" href="favicon.ico" type="image/png">
     
-    <!-- Link para o arquivo CSS do login (reusing login styles) -->
+    <!-- Link para o arquivo CSS externo -->
     <link rel="stylesheet" href="assets/css/login.css">
     
     <style>
@@ -426,21 +426,16 @@ $title = "Esqueceu a Senha";
 </head>
 <body>
     <div class="login-container">
-        <div class="brand-container">
-            <div class="brand-image">
-                <!-- Brand image or logo here -->
-            </div>
+        <div class="welcome-container">
+            <h2 class="welcome-title">Precisa de ajuda?</h2>
+            <p class="welcome-text">Entre em contato com nosso suporte!</p>
+            <a href="https://wa.me/5515991728242/?text=Olá!%20Preciso%20de%20ajuda%20para%20recuperar%20minha%20senha." class="signup-button">Chame o Suporte!</a>
         </div>
-
+        
         <div class="form-container">
-            <?php if ($step === 'request' || $step === 'success'): ?>
-                <h1 class="login-title">Esqueceu sua senha?</h1>
-                <p class="login-description">Informe seu nome de usuário para receber instruções de redefinição de senha.</p>
-            <?php else: ?>
-                <h1 class="login-title">Redefinir Senha</h1>
-                <p class="login-description">Crie uma nova senha para sua conta.</p>
-            <?php endif; ?>
-
+            <h1 class="login-title">🔑 Recuperar senha</h1>
+            <p>Digite seu e-mail para receber as instruções</p>
+            
             <?php if ($error_message): ?>
                 <div class="alert alert-error">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -453,7 +448,7 @@ $title = "Esqueceu a Senha";
                     </div>
                 </div>
             <?php endif; ?>
-
+            
             <?php if ($success_message): ?>
                 <div class="alert alert-success">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -466,312 +461,68 @@ $title = "Esqueceu a Senha";
                 </div>
             <?php endif; ?>
 
-            <?php if ($step === 'request' && !$success_message): ?>
-                <!-- Password Reset Request Form -->
-                <form action="forgot-password.php" method="POST" id="resetRequestForm" class="login_form">
-                    <!-- Token CSRF para proteger o formulário -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <input type="text" id="username" name="username" placeholder="Digite seu nome de usuário" required value="<?php echo htmlspecialchars($username); ?>">
-                            <span class="input-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                            </span>
-                        </div>
+            <form action="reset-password.php" method="POST" id="resetForm" autocomplete="off">
+                <!-- Token CSRF para proteger o formulário -->
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </span>
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
                     </div>
+                </div>
 
-                    <button type="submit" name="request_reset" class="login-button" id="requestResetBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        ENVIAR INSTRUÇÕES
-                    </button>
-                </form>
-            <?php elseif ($step === 'reset'): ?>
-                <!-- Reset Password Form -->
-                <form action="forgot-password.php" method="POST" id="resetPasswordForm" class="login_form">
-                    <!-- Token CSRF para proteger o formulário -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                    <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-                    <input type="hidden" name="username" value="<?php echo htmlspecialchars($username); ?>">
+                <button type="submit" class="login-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    ENVIAR INSTRUÇÕES
+                </button>
 
-                    <div class="form-group password-form">
-                        <div class="input-wrapper">
-                            <input type="password" id="password" name="password" placeholder="Nova senha" required>
-                            <span class="input-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg>
-                            </span>
-                            <button type="button" class="toggle-password" aria-label="Mostrar senha" onclick="togglePassword('password')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="password-strength">
-                            <div class="password-strength-bar" id="strengthBar"></div>
-                        </div>
-                        <div class="password-feedback" id="passwordFeedback"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar nova senha" required>
-                            <span class="input-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg>
-                            </span>
-                            <button type="button" class="toggle-password" aria-label="Mostrar senha" onclick="togglePassword('confirm_password')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="password-match" id="passwordMatch"></div>
-                    </div>
-
-                    <button type="submit" name="reset_password" class="login-button" id="resetPasswordBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                        </svg>
-                        REDEFINIR SENHA
-                    </button>
-                </form>
-            <?php endif; ?>
-
-            <div class="login-links">
-                <a href="index.php">Voltar para o Login</a>
-            </div>
+                <div class="back-to-login">
+                    <a href="index.php">Voltar para o login</a>
+                </div>
+            </form>
         </div>
-
+        
+        <!-- Rodapé com direitos autorais -->
         <footer class="site-footer">
-            <p>&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?> <span class="sidebar_z_letter"><?php echo APP_NAME_DESTAQUE; ?></span> | Desenvolvido por Sonho Digital LTDA.</p>
-            <p>v<?php echo APP_VERSION; ?></p>
+            <p>&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?> | Desenvolvido por Sonho Digital LTDA. Todos os direitos reservados.</p>
+            <p>v<?php echo APP_VERSION; ?></p> 
         </footer>
     </div>
 
     <script>
-        // Toggle password visibility
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const button = input.nextElementSibling;
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                    </svg>
-                `;
-            } else {
-                input.type = 'password';
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                `;
-            }
-        }
-
-        // Check password strength
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('password');
-            const confirmInput = document.getElementById('confirm_password');
-            const strengthBar = document.getElementById('strengthBar');
-            const feedback = document.getElementById('passwordFeedback');
-            const matchFeedback = document.getElementById('passwordMatch');
-            
-            if (passwordInput) {
-                passwordInput.addEventListener('input', function() {
-                    const password = this.value;
-                    let strength = 0;
-                    let color = '';
-                    let message = '';
-                    
-                    // Check password length
-                    if (password.length > 0) {
-                        strength += password.length >= 8 ? 1 : 0;
-                        // Check for uppercase and lowercase
-                        strength += /[A-Z]/.test(password) && /[a-z]/.test(password) ? 1 : 0;
-                        // Check for numbers
-                        strength += /\d/.test(password) ? 1 : 0;
-                        // Check for special characters
-                        strength += /[^A-Za-z0-9]/.test(password) ? 1 : 0;
-                    }
-                    
-                    // Set color and message based on strength
-                    switch(strength) {
-                        case 0:
-                            color = '#f8f9fa';
-                            message = '';
-                            break;
-                        case 1:
-                            color = '#dc3545';
-                            message = 'Senha muito fraca';
-                            break;
-                        case 2:
-                            color = '#ffc107';
-                            message = 'Senha fraca';
-                            break;
-                        case 3:
-                            color = '#0d6efd';
-                            message = 'Senha média';
-                            break;
-                        case 4:
-                            color = '#198754';
-                            message = 'Senha forte';
-                            break;
-                    }
-                    
-                    // Update UI
-                    strengthBar.style.width = (strength * 25) + '%';
-                    strengthBar.style.backgroundColor = color;
-                    feedback.textContent = message;
-                    feedback.style.color = color;
-                    
-                    // Check match if confirm password has value
-                    if (confirmInput && confirmInput.value) {
-                        checkPasswordMatch();
-                    }
-                });
+        // Adiciona loading no botão durante o submit
+        document.getElementById('resetForm').addEventListener('submit', function(e) {
+            // Desativa duplo envio
+            if (this.submitting) {
+                e.preventDefault();
+                return;
             }
             
-            if (confirmInput) {
-                confirmInput.addEventListener('input', checkPasswordMatch);
-            }
-            
-            function checkPasswordMatch() {
-                if (passwordInput.value === confirmInput.value) {
-                    matchFeedback.textContent = '✓ As senhas coincidem';
-                    matchFeedback.style.color = '#198754';
-                } else {
-                    matchFeedback.textContent = '✗ As senhas não coincidem';
-                    matchFeedback.style.color = '#dc3545';
-                }
-            }
-        });
-
-        // Form submission loading state
-        document.addEventListener('DOMContentLoaded', function() {
-            const requestForm = document.getElementById('resetRequestForm');
-            const resetForm = document.getElementById('resetPasswordForm');
-            
-            if (requestForm) {
-                requestForm.addEventListener('submit', function(e) {
-                    if (this.submitting) {
-                        e.preventDefault();
-                        return;
-                    }
-                    
-                    this.submitting = true;
-                    const button = document.getElementById('requestResetBtn');
-                    if (button) {
-                        button.disabled = true;
-                        button.innerHTML = `
-                            <svg class="spinner" viewBox="0 0 50 50">
-                                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                            </svg>
-                            ENVIANDO...
-                        `;
-                    }
-                });
-            }
-            
-            if (resetForm) {
-                resetForm.addEventListener('submit', function(e) {
-                    // Basic validation
-                    const password = document.getElementById('password').value;
-                    const confirmPassword = document.getElementById('confirm_password').value;
-                    
-                    if (password !== confirmPassword) {
-                        e.preventDefault();
-                        alert('As senhas não coincidem.');
-                        return;
-                    }
-                    
-                    if (password.length < 8) {
-                        e.preventDefault();
-                        alert('A senha deve ter pelo menos 8 caracteres.');
-                        return;
-                    }
-                    
-                    if (this.submitting) {
-                        e.preventDefault();
-                        return;
-                    }
-                    
-                    this.submitting = true;
-                    const button = document.getElementById('resetPasswordBtn');
-                    if (button) {
-                        button.disabled = true;
-                        button.innerHTML = `
-                            <svg class="spinner" viewBox="0 0 50 50">
-                                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                            </svg>
-                            PROCESSANDO...
-                        `;
-                    }
-                });
-            }
+            this.submitting = true;
+            const button = this.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.innerHTML = `
+                <svg class="spinner" viewBox="0 0 50 50">
+                    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                </svg>
+                Enviando...
+            `;
         });
         
-        // Add spinner styles
-        const style = document.createElement('style');
-        style.textContent = `
-            .spinner {
-                animation: rotate 2s linear infinite;
-                width: 20px;
-                height: 20px;
-                margin-right: 10px;
-            }
-
-            .spinner .path {
-                stroke: #ffffff;
-                stroke-linecap: round;
-                animation: dash 1.5s ease-in-out infinite;
-            }
-
-            @keyframes rotate {
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
-
-            @keyframes dash {
-                0% {
-                    stroke-dasharray: 1, 150;
-                    stroke-dashoffset: 0;
-                }
-                50% {
-                    stroke-dasharray: 90, 150;
-                    stroke-dashoffset: -35;
-                }
-                100% {
-                    stroke-dasharray: 90, 150;
-                    stroke-dashoffset: -124;
-                }
-            }
-            
-            .password-match {
-                font-size: 12px;
-                margin-top: 5px;
-            }
-        `;
-        document.head.appendChild(style);
+        // Previne reenvio de formulário em caso de F5 ou refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
     </script>
 </body>
 </html>

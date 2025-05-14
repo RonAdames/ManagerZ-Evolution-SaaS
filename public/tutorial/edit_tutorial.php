@@ -1,70 +1,109 @@
 <?php
 require_once '../config.php';
+require_once __DIR__ . '/../../src/Session.php';
 
-$title = "Edit Tutoriais";
-$error_message = '';
-$success_message = '';
+// Iniciar sessão segura
+Session::start();
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $title = $_POST['title'];
-        $description = $_POST['description'];
-        $video_url = $_POST['video_url'];
-
-        $stmt = $pdo->prepare("UPDATE tutorials SET title = :title, description = :description, video_url = :video_url WHERE id = :id");
-        $stmt->execute([
-            'title' => $title,
-            'description' => $description,
-            'video_url' => $video_url,
-            'id' => $id
-        ]);
-
-        $success_message = "Tutorial atualizado com sucesso!";
-    }
-
-    $stmt = $pdo->prepare("SELECT * FROM tutorials WHERE id = :id");
-    $stmt->execute(['id' => $id]);
-    $tutorial = $stmt->fetch();
-
-    if (!$tutorial) {
-        die("Tutorial não encontrado.");
-    }
-} else {
-    die("ID de tutorial inválido.");
+// Verificar se o usuário está logado
+if (!Session::isAuthenticated()) {
+    header('Location: ../index.php?error=Você precisa estar logado para acessar esta página');
+    exit;
 }
+
+// Verificar se o usuário tem permissão (skill 2)
+try {
+    $stmt = $pdo->prepare("SELECT skill FROM users WHERE id = ?");
+    $stmt->execute([Session::get('user_id')]);
+    $user = $stmt->fetch();
+    
+    if (!$user || $user['skill'] != 2) {
+        header('Location: list_tutoriais.php?error=Acesso negado');
+        exit;
+    }
+} catch (PDOException $e) {
+    header('Location: list_tutoriais.php?error=Erro ao verificar permissões');
+    exit;
+}
+
+$title = "Editar Tutorial";
+
+// Verificar se o ID foi fornecido
+if (!isset($_GET['id'])) {
+    header('Location: list_tutoriais.php?error=ID do tutorial não fornecido');
+    exit;
+}
+
+$tutorial_id = $_GET['id'];
+
+// Buscar dados do tutorial
+try {
+    $stmt = $pdo->prepare("SELECT * FROM tutorials WHERE id = ?");
+    $stmt->execute([$tutorial_id]);
+    $tutorial = $stmt->fetch();
+    
+    if (!$tutorial) {
+        header('Location: list_tutoriais.php?error=Tutorial não encontrado');
+        exit;
+    }
+} catch (PDOException $e) {
+    header('Location: list_tutoriais.php?error=Erro ao buscar tutorial');
+    exit;
+}
+
+// Processar o formulário quando enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
+    $video_url = trim($_POST['video_url']);
+    
+    if (empty($title) || empty($description) || empty($video_url)) {
+        Session::setFlash('error', 'Todos os campos são obrigatórios');
+    } else {
+        try {
+            $stmt = $pdo->prepare("UPDATE tutorials SET title = ?, description = ?, video_url = ? WHERE id = ?");
+            $stmt->execute([$title, $description, $video_url, $tutorial_id]);
+            
+            header('Location: list_tutoriais.php?success=Tutorial atualizado com sucesso');
+            exit;
+        } catch (PDOException $e) {
+            Session::setFlash('error', 'Erro ao atualizar tutorial: ' . $e->getMessage());
+        }
+    }
+}
+
+// Adicionar CSS específico para tutoriais
+$additional_css = ['../assets/css/tutorials.css'];
+
 include '../base.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Editar Tutorial</h1>
-
-    <?php if ($success_message): ?>
-        <p class="success"><?php echo htmlspecialchars($success_message); ?></p>
-    <?php elseif ($error_message): ?>
-        <p class="error"><?php echo htmlspecialchars($error_message); ?></p>
-    <?php endif; ?>
-
-    <form action="edit_tutorial.php?id=<?php echo $id; ?>" method="POST">
-        <label for="title">Título:</label>
-        <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($tutorial['title']); ?>" required>
-
-        <label for="description">Descrição:</label>
-        <textarea id="description" name="description"><?php echo htmlspecialchars($tutorial['description']); ?></textarea>
-
-        <label for="video_url">URL do Vídeo:</label>
-        <input type="url" id="video_url" name="video_url" value="<?php echo htmlspecialchars($tutorial['video_url']); ?>" required>
-
-        <button type="submit">Salvar Alterações</button>
-    </form>
-
-    <a href="list_tutoriais.php">Voltar para Lista de Tutoriais</a>
-</body>
-</html>
+<div class="container">
+    <div class="content-wrapper">
+        <h1>Editar Tutorial</h1>
+        
+        <form method="POST" class="form">
+            <div class="form-group">
+                <label for="title">Título:</label>
+                <input type="text" id="title" name="title" class="form-control" required value="<?php echo htmlspecialchars($tutorial['title']); ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Descrição:</label>
+                <input type="text" id="description" name="description" class="form-control" required value="<?php echo htmlspecialchars($tutorial['description']); ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="video_url">URL do Vídeo:</label>
+                <input type="text" id="video_url" name="video_url" class="form-control" required value="<?php echo htmlspecialchars($tutorial['video_url']); ?>">
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Atualizar Tutorial</button>
+                <a href="list_tutoriais.php">
+                    <button type="button" class="btn-secondary">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

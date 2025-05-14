@@ -1,6 +1,6 @@
 /* Base styles for sidebar with fixed z-index */
 :root {
-    /* --sidebar-width: 260px; */
+    --sidebar-width: 280px;
     --sidebar-width-tablet: 240px;
     --sidebar-width-mobile: 80px;
     --sidebar-bg: #1e1e2d;
@@ -253,6 +253,16 @@
 }
 
 /* Responsive Breakpoints */
+@media (max-width: 1920px) {
+    :root {
+        --sidebar-width: 280px;
+    }
+    
+    .content {
+        padding-left: var(--sidebar-width);
+    }
+}
+
 @media (max-width: 1200px) {
     :root {
         --sidebar-width: var(--sidebar-width-tablet);

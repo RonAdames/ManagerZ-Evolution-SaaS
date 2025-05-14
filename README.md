@@ -1,4 +1,4 @@
-# Manager Z SaaS - Open Source
+# Manager Z Open Source
 
 <div align="center">
   <img src="img_git/logo-managerz.png" alt="Logo do Manager Z" width="180" height="60">
