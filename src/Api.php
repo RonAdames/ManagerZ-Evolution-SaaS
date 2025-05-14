@@ -197,6 +197,7 @@ class Api {
             'instanceName' => $instanceName,
             'qrcode' => $qrcode,
             'integration' => $integration,
+            'code' => true // Adiciona o campo code para gerar o QR Code no novo formato
         ];
         
         // Adiciona as configurações adicionais

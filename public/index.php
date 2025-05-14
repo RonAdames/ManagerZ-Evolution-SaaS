@@ -65,7 +65,8 @@ if ($session_expired) {
         </div>
         
         <div class="form-container">
-            <h1 class="login-title">Olá, 👋</h1>
+            <h1 class="login-title">🔒 Iniciar sessão</h1>
+            <p class="login-subtitle">Entre com suas credenciais para acessar</p>
             
             <?php if ($error_message): ?>
                 <div class="alert alert-error">

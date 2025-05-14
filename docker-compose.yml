@@ -1,0 +1,112 @@
+version: "3.7"
+services:
+
+## --------------------------- ORION --------------------------- ##
+
+  managerz_app:
+    image: cadao/managerz:latest
+
+    networks:
+      - OrionNet ## Nome da rede interna
+
+    environment:
+    ## Configurações da Aplicação
+      - APP_NAME=${APP_NAME}
+      - APP_URL=${APP_URL}
+      - APP_TIMEZONE=${APP_TIMEZONE}
+
+    ## Configurações da Evolution API
+      - BASE_URL=${BASE_URL}
+      - API_KEY=${API_KEY}
+
+    ## Configurações do Banco de Dados  
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+
+    ## Configurações do SMTP
+      - SMTP_FROM=${SMTP_FROM}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+
+    ## Configurações de Segurança
+      - SESSION_LIFETIME=${SESSION_LIFETIME}
+      - MAX_LOGIN_ATTEMPTS=${MAX_LOGIN_ATTEMPTS}
+      - LOGIN_LOCKOUT_TIME=${LOGIN_LOCKOUT_TIME}
+      - CSRF_SECRET=${CSRF_SECRET}
+
+    ## Configurações de Debug
+      - DISPLAY_ERRORS=${DISPLAY_ERRORS}
+      - ERROR_REPORTING=${ERROR_REPORTING}
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.managerz_app.rule=Host(`${APP_URL_HOST}`)
+        - traefik.http.services.managerz_app.loadbalancer.server.port=80
+        - traefik.http.routers.managerz_app.service=managerz_app
+        - traefik.http.routers.managerz_app.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.managerz_app.entrypoints=websecure
+        - traefik.http.routers.managerz_app.tls=true
+
+## --------------------------- ORION --------------------------- ##
+
+  managerz_db:
+    image: percona/percona-server:8.0 ## Versão do MySQL
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_general_ci",
+        "--sql-mode=",
+        "--default-authentication-plugin=caching_sha2_password",
+        "--max-allowed-packet=512MB",
+      ]
+
+    volumes:
+      - managerz_db:/var/lib/mysql
+
+    networks:
+      - OrionNet ## Nome da rede interna
+
+    environment:
+      ## Senha do MYSQL
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+
+      ## TimeZone
+      - TZ=${TZ}
+
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+## --------------------------- ORION --------------------------- ##
+
+volumes:
+  managerz_db:
+    external: true
+    name: managerz_db
+    
+networks:
+  OrionNet:
+    external: true
+    name: OrionNet

@@ -290,7 +290,6 @@
     padding: 20px;
     background: white;
     border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .qrcode-wrapper img {
@@ -386,6 +385,7 @@
     display: flex;
     justify-content: center;
     gap: 15px;
+    margin-top: 20px;
 }
 
 /* Mensagens de Erro */

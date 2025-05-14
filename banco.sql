@@ -68,6 +68,22 @@ CREATE TABLE `users` (
   `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+-- Estrutura para tabela `password_resets`
+
+CREATE TABLE `password_resets` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `used` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_token` (`token`),
+  KEY `idx_expires_at` (`expires_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Índices para as tabelas
 
 -- Índices da tabela `instancias`
@@ -101,11 +117,14 @@ ALTER TABLE `users`
 ALTER TABLE `instancias`
   ADD CONSTRAINT `instancias_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
+ALTER TABLE `password_resets`
+  ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
 -- Inserção de dados na tabela `users`
 -- SENHA = 123
 INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `password`, `created_at`, `skill`, `max_instancias`, `active`) VALUES
-(1, 'admin', '', '', '$2y$10$GnlJOj3UMaZ7CMNFWtkxFeosendO7mGi8UsYfHev4RH1XHO0Rj7ry', '2024-11-05 06:31:29', 2, 777, 1),
-(2, 'teste', '', '', '$2y$10$GnlJOj3UMaZ7CMNFWtkxFeosendO7mGi8UsYfHev4RH1XHO0Rj7ry', '2024-11-05 07:42:22', 1, 3, 1);
+(1, 'admin', 'Administrador', '', '$2y$10$GnlJOj3UMaZ7CMNFWtkxFeosendO7mGi8UsYfHev4RH1XHO0Rj7ry', '2024-11-05 06:31:29', 2, 777, 1),
+(2, 'teste', 'Teste', '', '$2y$10$GnlJOj3UMaZ7CMNFWtkxFeosendO7mGi8UsYfHev4RH1XHO0Rj7ry', '2024-11-05 07:42:22', 1, 3, 1);
 
 COMMIT;
 
