@@ -22,12 +22,12 @@ Manager Z é um sistema de gerenciamento de APIs de WhatsApp open source, projet
 
 ### Já Implementadas
 
--✅ Gerenciamento de instâncias: Crie, configure e monitore várias instâncias de API do WhatsApp Usandoa  Evolution 
--✅ Autenticação segura: Sistema de login com múltiplos níveis de acesso 
--✅ Painel administrativo: Interface intuitiva para gerenciar todas as configurações e instâncias  
--✅ Registros de atividade: Logs detalhados para auditoria e rastreamento de uso  
--✅ Configurações personalizáveis: Adapte cada instância às necessidades específicas
--✅ Facilidade de conectar com Chatwoot e Webhook    
+✅ Gerenciamento de instâncias: Crie, configure e monitore várias instâncias de API do WhatsApp Usandoa  Evolution
+✅ Autenticação segura: Sistema de login com múltiplos níveis de acesso
+✅ Painel administrativo: Interface intuitiva para gerenciar todas as configurações e instâncias
+✅ Registros de atividade: Logs detalhados para auditoria e rastreamento de uso
+✅ Configurações personalizáveis: Adapte cada instância às necessidades específicas
+✅ Facilidade de conectar com Chatwoot e Webhook
 
 ### Em Desenvolvimento
 
